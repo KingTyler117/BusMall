@@ -10,7 +10,7 @@ var parentElement = document.getElementById('container');
 var totalVotes = 0;
 var names = [];
 var votes = [];
-var rounds = 5;
+var rounds = 25;
 
 // Render images to the dom
 
@@ -30,7 +30,7 @@ BusmallImage.prototype.render = function (){
   imageElement.src = this.filepath;
   imageElement.alt = this.alt;
   imageElement.title = this.title;
-  this.views++
+  this.views++;
   parentElement.appendChild(imageElement);
 
 };
