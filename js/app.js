@@ -37,6 +37,47 @@ BusmallImage.prototype.render = function (){
 
 
 
+function getTotals (){
+
+  // Getting data from local storage.
+
+  var data = localStorage.getItem('votes');
+
+  if (data === null){
+    totalVotes = 0;
+  } else {
+    var totalData = parseInt(data);
+    totalVotes = totalData;
+
+  }
+}
+getTotals();
+
+// Step 1. turn the thing you want to save in Local Storage into JSON
+// JSON.stringify()
+
+// var stringifiedVotes = JSON.stringify(votes);
+// console.log('this is the Json for the all Votes array' , stringifiedVotes);
+
+// // Step 2. set the item into Local Storage. Give it any key you want as a string and set the value as the JSON
+
+// localStorage.setItem('votes' , stringifiedVotes);
+
+// // Step 3. to get something out of local storage, we are going to get an item
+
+// var votesFromLocalStorage = localStorage.getItem('votes');
+
+// console.log('this is my votes from Local Storage' , votesFromLocalStorage );
+
+// // Step 4. turn it back into javascript
+
+// var votesTurnedBackIntoJavaScript = JSON.parse(votesFromLocalStorage);
+// console.log('my parsed votes' , votesTurnedBackIntoJavaScript);
+
+
+// The returned votes array is now a normal array of objects and it has lost its connection to the constructor
+
+
 //  Putting items all into an array.
 
 new BusmallImage('bag', '.jpg');
@@ -115,6 +156,10 @@ function handleClick(event){
     }
 
   }
+
+  localStorage.setItem('votes', totalVotes);
+
+
   if(totalVotes === rounds) {
     // To turn off the event listener
 
@@ -160,6 +205,35 @@ function makeNamesArray(){
 
   generateChart ();
 }
+
+// Product counter
+
+// for(var i = 0; i <allBusMall.length; i++){
+//   if(event.target.allText === allBusMall[i].altText){
+//     allBusMall[i].votes++;
+//     updateChartArrays();
+//   }
+
+//   if (totalVotes < 1) {
+//     totalVotes.section.removeEventListener('click' ,newSet);
+//     totalVotes.innerHTML = '';
+//     localStorage.setItem('staredProducts' , JSON.stringify(allBusMall));
+//     drawChart;
+//   }
+//   randomtotalVotes();
+
+// }
+
+// Updating info to the array
+
+function updateChartArrays() {
+  for (var i = 0; i< totalVotes.allProducts.length; i++) {
+    names [i] = totalVotes.allProducts[i].name;
+    votes[i] = totalVotes.allProducts[i].votes;
+  }
+}
+
+// Chart stuff
 
 function generateChart(){
   var ctx = document.getElementById('myChart').getContext('2d');
