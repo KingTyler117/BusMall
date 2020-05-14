@@ -14,12 +14,13 @@ var rounds = 25;
 
 // Render images to the dom
 
-function BusmallImage (name, extension) {
+function BusmallImage (name, extension, views=0 , votes=0) {
   this.filepath = `images/${name}${extension}`;
   this.alt = name;
-  this.votes = 0;
-  this.views = 0;
+  this.votes = votes;
+  this.views = views;
   this.title = name;
+  this.extension = extension;
   allBusMall.push(this);
 
 }
@@ -46,7 +47,7 @@ function getTotals (){
   if (data === null){
     totalVotes = 0;
   } else {
-    var totalData = parseInt(data);
+    var totalData = JSON.parse(data);
     totalVotes = totalData;
 
   }
@@ -80,27 +81,52 @@ getTotals();
 
 //  Putting items all into an array.
 
-new BusmallImage('bag', '.jpg');
-new BusmallImage ('banana', '.jpg');
-new BusmallImage ('boots' , '.jpg');
-new BusmallImage ('bathroom' , '.jpg');
-new BusmallImage('breakfast' , '.jpg');
-new BusmallImage ('bubblegum' , '.jpg');
-new BusmallImage ('chair' , '.jpg');
-new BusmallImage ('cthulhu' , '.jpg');
-new BusmallImage ('dog-duck' , '.jpg');
-new BusmallImage ('dragon' , '.jpg');
-new BusmallImage ('pen' , '.jpg');
-new BusmallImage ('pet-sweep' , '.jpg');
-new BusmallImage ('scissors' , '.jpg');
-new BusmallImage ('shark' , '.jpg');
-new BusmallImage ('sweep' , '.png');
-new BusmallImage ('tauntaun' , '.jpg');
-new BusmallImage('unicorn' , '.jpg');
-new BusmallImage ('usb' , '.gif');
-new BusmallImage ('unicorn' , '.jpg');
-new BusmallImage ('water-can' , '.jpg');
-new BusmallImage ('wine-glass' , '.jpg');
+function starter(){
+  var save = localStorage.getItem('saveAllProducts');
+  if (save === null ){
+    new BusmallImage('bag', '.jpg');
+    new BusmallImage ('banana', '.jpg');
+    new BusmallImage ('boots' , '.jpg');
+    new BusmallImage ('bathroom' , '.jpg');
+    new BusmallImage('breakfast' , '.jpg');
+    new BusmallImage ('bubblegum' , '.jpg');
+    new BusmallImage ('chair' , '.jpg');
+    new BusmallImage ('cthulhu' , '.jpg');
+    new BusmallImage ('dog-duck' , '.jpg');
+    new BusmallImage ('dragon' , '.jpg');
+    new BusmallImage ('pen' , '.jpg');
+    new BusmallImage ('pet-sweep' , '.jpg');
+    new BusmallImage ('scissors' , '.jpg');
+    new BusmallImage ('shark' , '.jpg');
+    new BusmallImage ('sweep' , '.png');
+    new BusmallImage ('tauntaun' , '.jpg');
+    new BusmallImage('unicorn' , '.jpg');
+    new BusmallImage ('usb' , '.gif');
+    new BusmallImage ('unicorn' , '.jpg');
+    new BusmallImage ('water-can' , '.jpg');
+    new BusmallImage ('wine-glass' , '.jpg');
+
+  }else{
+    // This is where we re create Busmall images.
+    var oldProducts = JSON.parse(save);
+    for( var i =0; i<oldProducts.length; i ++){
+      var name =  oldProducts[i] .alt;
+      var extension = oldProducts[i] .extension;
+      var votes = oldProducts[i].votes;
+      var views = oldProducts[i].views;
+      new BusmallImage (name , extension, views, votes);
+    }
+    // console.log(oldProducts);
+  }
+  displayImage();
+  displayImage();
+  displayImage();
+
+  parentElement.addEventListener ('click' , handleClick);
+
+}
+starter();
+
 
 function getRandomIndex (){
 
@@ -158,12 +184,14 @@ function handleClick(event){
   }
 
   localStorage.setItem('votes', totalVotes);
-
+  var productString = JSON.stringify(allBusMall);
+  localStorage.setItem('saveAllProducts', productString);
 
   if(totalVotes === rounds) {
     // To turn off the event listener
 
     parentElement.removeEventListener ('click' ,handleClick);
+    localStorage.removeItem('votes');
     makeNamesArray();
 
   } else {
@@ -177,11 +205,6 @@ function handleClick(event){
 
 }
 
-displayImage();
-displayImage();
-displayImage();
-
-parentElement.addEventListener ('click' , handleClick);
 
 
 // only allow 25 votes
